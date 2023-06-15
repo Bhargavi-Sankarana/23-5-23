@@ -9,7 +9,7 @@ function Home() {
     }
     function show() {
         console.log(username,password)
-        axios.post("https://reqres.in/api/users",{name:username,passcode:password})
+        axios.post("http://localhost:4000/add",{name:username,passcode:password})
         .then((res)=>{
           console.log(res)
         })

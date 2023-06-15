@@ -1,18 +1,48 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
+const express=require("express")
+const app=express()
+//const products=require("./products")
+const mongoose=require("mongoose")
+const cors=require("cors")
+const bodyParser=require("body-parser")
+const Content=require("./schema")
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+console.log(Content)
+app.use(bodyParser.urlencoded({
+    extended:true
+}))
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+app.use(bodyParser.json())
+app.use(cors())
+
+mongoose.connect("mongodb+srv://Bhargavi_Sankarana:Bhargavi_Sankarana@cluster0.j78fxfv.mongodb.net/firstdb?retryWrites=true&w=majority")
+    .then(()=>{
+        console.log("Mongodb connected Successfully")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+app.get("/",(req,res)=>{
+    res.send("server started successfully")
+})
+
+
+app.post("/add",(req,res)=>{
+    console.log("data from front end ",req.body)
+    const {name,passcode}=req.body
+    const newData=new Content({
+        name,passcode
+    })
+    newData.save()
+    res.send("added")
+})
+/*app.get("/products",(req,res)=>{
+    res.json(products)
+})*/
+
+
+app.get("/name",(req,res)=>{
+    res.send("Codegnan IT Solutions")
+})
+
+app.listen(4000,()=>console.log("server is started"))
